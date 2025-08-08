@@ -1,0 +1,35 @@
+// TODO: swap SQLite to Postgres in production.
+// datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Envelope {
+  id            String   @id @default(cuid())
+  email         String
+  filename      String
+  filePath      String
+  createdAt     DateTime @default(now())
+  status        Status   @default(PENDING)
+  openedAt      DateTime?
+  openedIp      String?
+  openedUa      String?
+  completedAt   DateTime?
+  completedIp   String?
+  completedUa   String?
+  sha256        String?
+  consent       Boolean  @default(false)
+  auditTrailUrl String?
+}
+
+enum Status {
+  PENDING
+  OPENED
+  COMPLETED
+}
